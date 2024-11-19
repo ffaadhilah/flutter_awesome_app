@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/photo_model.dart';
 import '../screens/detail_screen.dart';
 
@@ -14,7 +15,13 @@ class PhotoGridItem extends StatelessWidget {
         context,
         MaterialPageRoute(builder: (context) => DetailScreen(photo: photo)),
       ),
-      child: Image.network(photo.thumbnail, fit: BoxFit.cover),
+      child: CachedNetworkImage(
+        imageUrl: photo.thumbnail,
+        placeholder: (context, url) =>
+            Center(child: CircularProgressIndicator()),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+        fit: BoxFit.cover,
+      ),
     );
   }
 }
