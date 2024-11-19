@@ -55,9 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     floating: false,
                     pinned: true,
                     flexibleSpace: FlexibleSpaceBar(
-                      title: Text('Awesome App'),
+                      title: Text(
+                        'Awesome App',
+                        style: TextStyle(color: Colors.white),
+                      ),
                       background: Image.network(
-                        'https://source.unsplash.com/random',
+                        'https://picsum.photos/200/300',
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -65,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       IconButton(
                         icon: Icon(
                           _isGridView ? Icons.view_list : Icons.grid_view,
+                          color: Colors.white,
                         ),
                         onPressed: () => setState(() {
                           _isGridView = !_isGridView;
