@@ -1,3 +1,4 @@
+import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../models/photo_model.dart';
@@ -9,9 +10,41 @@ class PhotoGridItem extends StatelessWidget {
 
   PhotoGridItem({required this.photo});
 
+  void _processImageInBackground(String imageUrl) async {
+    final receivePort = ReceivePort();
+    try {
+      await Isolate.spawn(_imageProcessor, [imageUrl, receivePort.sendPort]);
+      final result = await receivePort.first;
+      if (result is bool && result) {
+        print('Image processed successfully: $imageUrl');
+      } else {
+        throw 'Image processing failed for $imageUrl';
+      }
+    } catch (error) {
+      print('Error processing image: $error');
+    }
+  }
+
+  static void _imageProcessor(List<dynamic> args) {
+    final String imageUrl = args[0];
+    final SendPort sendPort = args[1];
+
+    try {
+      print('Processing image: $imageUrl');
+      final isSuccessful = true;
+      Future.delayed(Duration(seconds: 1), () {
+        sendPort.send(isSuccessful);
+      });
+    } catch (error) {
+      sendPort.send(error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double itemHeight = (MediaQuery.of(context).size.width / 2) - 12;
+
+    _processImageInBackground(photo.thumbnail);
 
     return GestureDetector(
         onTap: () => Navigator.push(
