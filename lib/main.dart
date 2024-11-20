@@ -7,7 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   await Hive.initFlutter();
-  await Hive.openBox('photos'); // Open a box for caching
+  await Hive.openBox('photos');
   runApp(MyApp());
 }
 
@@ -17,11 +17,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Awesome App',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: BlocProvider(
-        create: (_) => PhotoBloc(PexelsService()),
-        child: HomeScreen(),
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.lightBlue[50],
+        appBarTheme: AppBarTheme(
+            backgroundColor: Colors.blue,
+            titleTextStyle: TextStyle(
+                color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+            iconTheme: IconThemeData(color: Colors.white)),
       ),
+      home: BlocProvider(
+          create: (_) => PhotoBloc(PexelsService()), child: HomeScreen()),
     );
   }
 }

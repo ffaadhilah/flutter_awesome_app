@@ -75,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               onPressed: () => setState(() {
                                     _isGridView = !_isGridView;
                                   }),
-                              color: Colors.white,
                               iconSize: 35)
                         ]),
                     BlocBuilder<PhotoBloc, PhotoState>(
